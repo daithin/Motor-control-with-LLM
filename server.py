@@ -3,10 +3,20 @@ import tornado.ioloop#tornadoイベントグループを管理するモジュー
 import tornado.web#tornadoのWebフレームワーク機能を提供モジュール
 #リクエストハンドラ、ルーティングなどを含む
 
-#tornado.webの.RequestHandlerを継承
+#tornado.webの.RequestHandlerを継承　実際アクセスしたら表示される部分
 class MainHandler(tornado.web.RequestHandler):
     def get(self):#getリクエストを処理
-        self.write("Hello, world!")#hello.worldを返す
+        self.write("""
+        <html><body><form action="/" method="post">
+        <input type="text" name="input">
+        <input type="submit" value="Submit">
+        </form></body></html>
+        """)
+
+    def post(self):
+        user_input = self.get_body_argument("input", default="No input received")
+        self.write(f"Received input: {user_input}")
+
 
 #tornado.web.のApplicationクラスのインスタンスを作成
 def make_app():
